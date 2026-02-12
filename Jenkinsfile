@@ -1,35 +1,40 @@
 pipeline {
     agent any
 
+    tools {
+        python 'Python311'
+    }
+
     stages {
 
-        stage('Checkout SCM') {
+        stage('Check Python') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
+                bat 'python --version'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat 'python -m venv venv'
+                bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
             }
         }
 
         stage('Train Model') {
             steps {
-                bat 'python train.py'
+                bat 'venv\\Scripts\\activate && python train.py'
             }
         }
 
         stage('Test Model') {
             steps {
-                bat 'python test.py'
+                bat 'venv\\Scripts\\activate && python test.py'
             }
         }
 
-        stage('Deploy') {
+        stage('Success') {
             steps {
-                bat 'start /B python app.py'
+                echo 'ML Pipeline Completed Successfully!'
             }
         }
     }
