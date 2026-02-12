@@ -7,7 +7,7 @@ model = joblib.load("model.pkl")
 
 @app.route("/")
 def home():
-    return "ML Model is Running!"
+    return "ML Model Deployed!"
 
 @app.route("/predict", methods=["POST"])
 def predict():
