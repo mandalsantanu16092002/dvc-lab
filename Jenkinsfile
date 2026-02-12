@@ -3,22 +3,33 @@ pipeline {
 
     stages {
 
+        stage('Checkout SCM') {
+            steps {
+                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                bat 'python -m venv venv'
-                bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
             }
         }
 
         stage('Train Model') {
             steps {
-                bat 'venv\\Scripts\\activate && python train.py'
+                bat 'python train.py'
             }
         }
 
         stage('Test Model') {
             steps {
-                bat 'venv\\Scripts\\activate && python test.py'
+                bat 'python test.py'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                bat 'start /B python app.py'
             }
         }
     }
